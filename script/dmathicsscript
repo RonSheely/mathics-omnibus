@@ -137,7 +137,7 @@ $DOCKER run \
 	--interactive \
 	--network=host \
 	--volume="$PWD":/app \
-	--volume "${APP_DATADIR}:/usr/src/app/data" \
+	--volume "${APP_DATADIR}:/home/ubuntu/.local/var/" \
 	--volume "${CONFIGDIR}:/home/ubuntu/.config/mathicsscript" \
 	$GRAPHICS_DEVICE \
     $MATHICS3_IMAGE \

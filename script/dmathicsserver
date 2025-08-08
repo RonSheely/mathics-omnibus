@@ -76,7 +76,7 @@ $DOCKER run \
 		--workdir=/app \
 		--volume="$PWD":/app \
 		--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-		--volume="${APP_DATADIR}:/usr/src/app/data" \
+		--volume="${APP_DATADIR}:/home/ubuntu/.local/var/Mathics3" \
 		-p 8000:8000 \
 		$MATHICS3_IMAGE \
 		--mode ui -- $stripped_args

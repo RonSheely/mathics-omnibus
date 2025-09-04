@@ -1,15 +1,22 @@
 FROM ubuntu:24.10
 
 ENV MATHICS3_HOME=/home/ubuntu
-ENV ENTRYPOINT_COMMAND="docker run -it {MATHICS_IMAGE}"
 ENV MATHICS3_MODULE_OPTION="--load-module pymathics.graph,pymathics.natlang,pymathics.trepan"
+ENV ENTRYPOINT_COMMAND="docker run -it {MATHICS3_IMAGE}"
 
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 WORKDIR $MATHICS3_HOME
 
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+COPY requirements.txt ./
 RUN apt-get update
 RUN apt-get install -qq apt-utils
+
+# we need libsqlite3-dev now if ubuntu doesn't come with that, we'll need
+# to build our own Python
+# Leave out inkscape  for now.
+
+# inxi and mesa-utils might be optional
+# npm pulls in nodejs, but we'll be explicit.
 
 RUN apt-get update -y && apt-get upgrade -y -qq
 
@@ -40,7 +47,8 @@ RUN apt-get install -y -qq \
     pkg-config \
     pyqt5-dev-tools \
     python3-pip \
-    python3.12-venv \
+    python3.13-dev \
+    python3.13-venv \
     remake \
     rustc \
     sqlite3 \
@@ -49,11 +57,22 @@ RUN apt-get install -y -qq \
     x11-apps \
     xserver-xorg-video-all
 
-RUN /usr/bin/python3.12 -m venv /opt/python3.12
-ENV PATH=.:/opt/python3.12/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV PYTHON=/opt/python3.12/bin/python3.12
-ENV PIP=/opt/python3.12/bin/pip
+# # to make docker layers be more usuable in development
+# # defer deletion until close to the end
+# # RUN rm -fr /tmp*_amd64.deb
+
+RUN /usr/bin/python3.13 -m venv /opt/python3.13
+ENV PATH=.:/opt/python3.13/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PYTHON=/opt/python3.13/bin/python3.13
+ENV PIP=/opt/python3.13/bin/pip
 RUN $PYTHON -m pip install --upgrade pip
+
+####################
+# Our hacked stopit
+####################
+
+RUN git clone --depth 1 https://github.com/Mathics3/stopit.git
+RUN (cd stopit && $PIP install -e .)
 
 COPY src/doc_html_data.pcl doc_html_data.pcl
 RUN mkdir -p ${MATHICS3_HOME}/.local/var/Mathics3
@@ -61,26 +80,25 @@ RUN mv -v doc_html_data.pcl ${MATHICS3_HOME}/.local/var/Mathics3/doc_data_html.p
 RUN mkdir -p ${MATHICS3_HOME}/mathics-core/mathics/doc/latex
 COPY src/mathics.pdf mathics-core/mathics/doc/latex/mathics.pdf
 
-RUN $PIP install Mathics3
+RUN $PIP install cython Mathics3[full]
 RUN $PIP install PyQt6
-RUN $PIP install mathicsscript
-RUN $PIP install Mathics-Django
-RUN $PIP install pymathics-graph
-RUN $PIP install Mathics3-trepan
-
-# RUN git clone --depth 1 https://github.com/Mathics3/Mathics3-trepan.git
-# RUN (cd Mathics3-trepan && $PIP install -e .)
-
+RUN $PIP install mathicsscript[full]
+RUN $PIP install Mathics-Django[full]
+RUN $PIP install Mathics3-graph
+RUN $PIP install Mathics3-Module-PyICU
+RUN $PIP install Mathics3-Module-trepan
 RUN $PIP install trepan3k-mathics3
 
 RUN $PIP install spacy wordcloud
 RUN $PYTHON -m spacy download en_core_web_md
 RUN $PIP install nltk
 RUN $PYTHON -m nltk.downloader wordnet omw-1.4
-RUN $PIP install pymathics-natlang
+RUN $PIP install Mathics3-Module-nltk
 
 COPY entrypoint.sh /usr/local/bin/mathics-omnibus.sh
 RUN chmod +x /usr/local/bin/mathics-omnibus.sh
+COPY src/mathics.pdf mathics-core/mathics/doc/latex/mathics.pdf
+
 
 EXPOSE 8000
 
@@ -90,6 +108,7 @@ RUN mkdir -p ${MATHICS3_HOME}/data
 RUN mkdir -p ${MATHICS3_HOME}/.local/var/Mathics3/Packages
 COPY django-db/mathics.sqlite ${MATHICS3_HOME}/.local/var/Mathics3/mathics.sqlite
 RUN chown -R ubuntu:ubuntu $MATHICS3_HOME ${MATHICS3_HOME}/.local
+RUN chown -R ubuntu:ubuntu ${MATHICS3_HOME}/data
 USER ubuntu
 
 ENTRYPOINT ["/usr/local/bin/mathics-omnibus.sh"]

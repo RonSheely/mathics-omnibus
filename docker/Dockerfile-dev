@@ -1,10 +1,9 @@
 FROM ubuntu:24.10
 
 ENV MATHICS3_HOME=/home/ubuntu
-
 ENV MATHICS3_MODULE_OPTION="--load-module pymathics.graph,pymathics.natlang,pymathics.trepan"
-
 ENV ENTRYPOINT_COMMAND="docker run -it {MATHICS3_IMAGE}"
+
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 WORKDIR $MATHICS3_HOME
 
@@ -69,7 +68,7 @@ ENV PIP=/opt/python3.13/bin/pip
 RUN $PYTHON -m pip install --upgrade pip
 
 ####################
-# Oour hacked stopit
+# Our hacked stopit
 ####################
 
 RUN git clone --depth 1 https://github.com/Mathics3/stopit.git
@@ -107,7 +106,7 @@ RUN $PIP install -e git+https://github.com/Mathics3/pymathics-graph#egg=mathics3
 RUN $PIP install -e git+https://github.com/Mathics3/pymathics-natlang#egg=pymathics-natlang
 # # RUN $PIP install "pymathics-natlang>=8"
 
-RUN $PIP install spacy
+RUN $PIP install spacy wordcloud
 RUN $PYTHON -m spacy download en_core_web_md
 RUN $PIP install nltk
 RUN $PYTHON -m nltk.downloader wordnet omw-1.4

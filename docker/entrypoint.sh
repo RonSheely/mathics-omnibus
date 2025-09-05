@@ -57,7 +57,7 @@ done
 case $mathics_mode in
     cli) mathicsscript $@
 		 ;;
-    mathics3-tokens) python ${USER_HOME}/mathics-scanner/mathics_scanner/mathics3_tokens.py $@
+    mathics3-tokens) mathics3-tokens $@
 		 ;;
     minimal|mathics|mathics3)
 		mathics $@

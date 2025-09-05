@@ -92,7 +92,6 @@ RUN $PIP install trepan3k-mathics3
 RUN $PIP install spacy wordcloud
 RUN $PYTHON -m spacy download en_core_web_md
 RUN $PIP install nltk
-RUN $PYTHON -m nltk.downloader wordnet omw-1.4
 RUN $PIP install Mathics3-Module-nltk
 
 COPY entrypoint.sh /usr/local/bin/mathics-omnibus.sh
@@ -110,6 +109,7 @@ COPY django-db/mathics.sqlite ${MATHICS3_HOME}/.local/var/Mathics3/mathics.sqlit
 RUN chown -R ubuntu:ubuntu $MATHICS3_HOME ${MATHICS3_HOME}/.local
 RUN chown -R ubuntu:ubuntu ${MATHICS3_HOME}/data
 USER ubuntu
+RUN $PYTHON -m nltk.downloader wordnet2022 omw-1.4
 
 ENTRYPOINT ["/usr/local/bin/mathics-omnibus.sh"]
 

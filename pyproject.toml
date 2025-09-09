@@ -1,0 +1,47 @@
+[build-system]
+requires = [
+    "setuptools",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Mathics3-omnibus"
+description = "A Collection Mathics components to provide the full Mathics3 experience"
+dependencies = [
+    "Mathics3[full] >= 9.0.0",
+    "mathicsscript[full] >=9.0.0",
+    "Mathics3-Module-nltk >= 9.0.0",
+    "Mathics3-Module-PyICU >= 9.0.0",
+    "pymathics-graph >= 8.0.1",
+]
+requires-python = ">=3.10"
+readme = "README.rst"
+license = "GPL-3.0-or-later"
+keywords = ["Mathematica", "Wolfram", "Interpreter", "Shell", "Math", "CAS"]
+maintainers = [
+    {name = "Mathics3 Group"},
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Interpreters",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://mathics.org/"
+
+[tool.setuptools.packages.find]
+include = ["mathics_omnibus*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "mathics_omnibus.version.__version__"}

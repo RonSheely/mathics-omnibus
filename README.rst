@@ -27,7 +27,8 @@ That image is a combination of:
 * `mathics-pygments <https://github.com/Mathics3/mathics-pygments>`_ (WL Syntax Highlighting)
 * `Mathics-Django <https://github.com/Mathics3/Mathics-Django>`_ (Django-based HTTP server)
 * `mathics-threejs-backend <https://github.com/Mathics3/mathics-threejs-backend>`_ (Graphics3D rendering using threejs)
-* `pymathics-natlang <https://github.com/Mathics3/pymathics-natlang>`_ (Natural Language Processing add-on)
+* `Mathics-Module-nltk <https://github.com/Mathics3/Mathics3-Module-nltk>`_ (Mathics3 Module for Natural Language Processing add-on via NLTK)
+* `Mathics-Module-PyUI <https://github.com/Mathics3/Mathics3-Module-PyUCI>`_ (Mathics3 Module for ICU - Human-Language Alphabets and Locales via PyICU)
 * `pymathics-graph <https://github.com/Mathics3/pymathics-graph>`_ (Graph add-on based on `NetworkX <https://networkx.org/>`_.
 
 It is likely that in the future more components will be added, so stay tuned...

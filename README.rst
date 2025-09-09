@@ -1,22 +1,22 @@
 |Pypi Installs| |Latest Version| |Supported Python Versions|
 
-Mathics3 is a general-purpose computer algebra system (CAS). It is an open-source alternative to Mathematica. It is free both as in "freedom" and as in "free beer".
+Mathics3 is a general-purpose computer algebra system (CAS). It is an open-source alternative to Mathematica. It is free, both in the sense of "freedom" and in the sense of "free beer".
 
-`Mathics3 <https://mathics.org>`_ consists of a number of separable components so that those pieces that are desired can be used without the burden of dependencies of the other parts.
+`Mathics3 <https://mathics.org>`_ consists of several separable components so that those pieces that are desired can be used without the burden of dependencies of the other parts.
 
-For example if you are interested in just running a command-line interface, you might not be interested in having Django and what that entails and vice versa.
+For example, if you are interested in just running a command-line interface, you might not be interested in having Django and what that entails, and vice versa.
 If you are just interested in the computational library, there is no need for either the Web parts or the command-line library parts.
 
-But what if you want both command-line interface, Web interface, all of the Pymathics libraries and whatever else there is to offer?
+But what if you want both command-line interface, the Web interface, all of the Mathics3 Modules and whatever else there is to offer?
 
 That's what this repository is about. Here we have a PyPI installable package that pull in the various components and offer commands:
 
 * ``mathics3-tokens`` utility to show how an input stream is tokenized by Mathics3
 * ``mathicsscript`` to run the command-line interface,
 * ``mathicsserver`` to run the Django-Web server,
-* ``dmathicsscript`` and ``dmathicsserver`` which runs the docker version of these,
+* ``dmathicsscript`` and ``dmathicsserver``, which runs the docker version of these,
 * ``dmathicssdoc`` which runs a PDF viewer, `evince <https://wiki.gnome.org/Apps/Evince>`_, which can view the generated reference manual in PDF.
-* ``dmathicsdoccopy`` which copies the the generated reference PDF manual out of the container and into the host filesystem.
+* ``dmathicsdoccopy`` which copies the generated reference PDF manual out of the container and into the host filesystem.
 
 This repository also contains the Dockerfiles used to create the `mathicsorg/mathics docker images <https://hub.docker.com/repository/docker/mathicsorg/mathics>`_.
 
@@ -48,10 +48,10 @@ By default, we use a SQLite database that has examples that you can
 load and use. This data comes from
 `mathics-omnibus/django-db/mathics.sqlite <https://github.com/Mathics3/mathics-omnibus/tree/master/docker/django-db>`_.
 
-Since this is tied to the docker image, any changes made won't survive
-across restarting the docker image.
+Since this is tied to the Docker image, any changes made won't survive
+across restarting the Docker image.
 
-If you would like to save your own you can set the environment
+If you would like to save your own, you can set the environment
 variable ``MATHICS_DJANGO_DB_PATH``. Here is an example:
 
 
@@ -78,6 +78,6 @@ variable ``MATHICS_DJANGO_DB_PATH``. Here is an example:
       Apply all migrations: auth, contenttypes, sessions, sites, web
     Running migrations:
 
-In the above when it says ``mathics.sqlite not found`` an empty one is
+In the above, when it says ``mathics.sqlite not found`` an empty one is
 created. The real location of it outside of the container is in
 ``/tmp/mathics-django/mathics.sqlite``.
